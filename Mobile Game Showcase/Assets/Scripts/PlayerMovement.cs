@@ -5,39 +5,42 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     [Header("Movement")]
-    [SerializeField] private float moveSpeed = 1;
-    [SerializeField] private float jumpForce = 1;
+    [SerializeField] private bool canMove = true;
+    [Min(0) ,SerializeField] private float moveSpeed = 1;
+    [Min(0) ,SerializeField] private float jumpForce = 1;
 
     [Header("Controls")]
+    [Tooltip("Allows the game to be played with keyboard if set to true.")] public bool allowKeyControls = true;
     [SerializeField] private FixedJoystick joystick;
     [SerializeField] private Canvas mobileControls;
-    [Tooltip("Allows the game to be played with keyboard.")] public bool allowKeyControls = true;
-    //[Tooltip("Allow gravity if the game is a platformer.") ,SerializeField] private bool allowGravity = false;
 
     //Internal Variables
-    private Collider2D collider;
-    private Rigidbody2D rigidbody2D;
+    private Collider2D cldr;
+    private Rigidbody2D rb;
     private bool allowGravity = false;
 
     private void Awake()
     {
-        rigidbody2D = GetComponent<Rigidbody2D>();
-        collider = GetComponent<Collider2D>();
+        rb = GetComponent<Rigidbody2D>();
+        cldr = GetComponent<Collider2D>();
     }
 
     private void Start()
     {
-        allowGravity = rigidbody2D.gravityScale > 0;
+        allowGravity = rb.gravityScale > 0;
         mobileControls.enabled = !allowKeyControls;
         joystick.AxisOptions = allowGravity ? AxisOptions.Horizontal : AxisOptions.Both;
-        GameObject.Find("Jump").SetActive(allowGravity && !allowKeyControls);
+        //GameObject.Find("Jump").SetActive(allowGravity && !allowKeyControls);
     }
 
     private void Update()
     {
-        //Sets the move variable depending on the controls
-        Vector2 move = DetermineControls();
-        MovePlayer(move);
+        if (canMove)
+        {
+            //Sets the move variable depending on the controls
+            Vector2 move = DetermineControls();
+            MovePlayer(move);
+        }
 
         if (Input.GetButtonDown("Jump") && allowKeyControls)
         {
@@ -48,9 +51,9 @@ public class PlayerMovement : MonoBehaviour
     private void MovePlayer(Vector2 move)
     {
         float moveMultiplier = moveSpeed * 10;
-        Vector3 movePlayer = new(x: move.x * moveMultiplier, y: !allowGravity ? move.y * moveMultiplier : rigidbody2D.velocity.y);
+        Vector3 movePlayer = new(x: move.x * moveMultiplier, y: !allowGravity ? move.y * moveMultiplier : rb.velocity.y);
 
-        rigidbody2D.velocity = movePlayer;
+        rb.velocity = movePlayer;
     }
 
     private Vector2 DetermineControls()
@@ -73,10 +76,10 @@ public class PlayerMovement : MonoBehaviour
 
     public void Jump()
     {
-        if (collider.IsTouchingLayers(LayerMask.GetMask("Ground")) && allowGravity)
+        if (cldr.IsTouchingLayers(LayerMask.GetMask("Ground")) && allowGravity)
         {
             Vector2 playerJump = new(0, jumpForce * 100);
-            rigidbody2D.AddForce(playerJump);
+            rb.AddForce(playerJump);
         }
     }
 }
