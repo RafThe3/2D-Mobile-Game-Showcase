@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     [Header("Movement")]
-    [SerializeField] private bool canMove = true;
+    public bool canMove = true;
     [Min(0) ,SerializeField] private float moveSpeed = 1;
     [Min(0) ,SerializeField] private float jumpForce = 1;
 
@@ -33,7 +33,7 @@ public class PlayerMovement : MonoBehaviour
         //GameObject.Find("Jump").SetActive(allowGravity && !allowKeyControls);
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         if (canMove)
         {
