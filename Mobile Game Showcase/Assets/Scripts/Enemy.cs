@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Enemy : MonoBehaviour
 {
@@ -15,8 +16,9 @@ public class Enemy : MonoBehaviour
 
     #region Health
     [Header("Health")]
-    [SerializeField] private int maxHealth = 100;
+    [Min(0) ,SerializeField] private int maxHealth = 100;
     [SerializeField] private TMPro.TextMeshProUGUI healthText;
+    [SerializeField] private Slider healthBar;
 
     //Internal Variables
     private int currentHealth = 0;
@@ -43,7 +45,8 @@ public class Enemy : MonoBehaviour
     {
         #region Health
         currentHealth = maxHealth;
-        healthText.enabled = false;
+        healthBar.value = healthBar.maxValue;
+        healthBar.gameObject.SetActive(false);
         textScale = healthText.transform.localScale;
         #endregion
 
@@ -70,24 +73,19 @@ public class Enemy : MonoBehaviour
         #endregion
 
         #region Health
-        DisplayEnemyHealth();
-
-        if (Input.GetKeyDown(KeyCode.Mouse0))
-        {
-            TakeDamage(10);
-        }
+        DisplayHealth();
 
         if (currentHealth <= 0)
         {
             Die();
         }
 
-        //Code below fixes bugs
-
+        //Bug fixes
         if (currentHealth < 0)
         {
             currentHealth = 0;
         }
+
         #endregion
 
         #region Damage
@@ -111,18 +109,17 @@ public class Enemy : MonoBehaviour
     #endregion
 
     #region Health
-    private void DisplayEnemyHealth()
+    private void DisplayHealth()
     {
-        Vector3 enemyFacing = gameObject.transform.localScale.x < 0 ? new(-textScale.x, textScale.y, textScale.z) : textScale;
-        healthText.transform.localScale = enemyFacing;
-        string enemyHealthText = $"Health: {currentHealth}";
+        //Vector3 enemyFacing = gameObject.transform.localScale.x < 0 ? new(-textScale.x, textScale.y, textScale.z) : textScale;
+        //healthBar.transform.localScale = enemyFacing;
 
         if (currentHealth < 100)
         {
-            healthText.enabled = true;
+            healthBar.gameObject.SetActive(true);
         }
 
-        healthText.text = enemyHealthText;
+        healthBar.value = currentHealth;
     }
 
     public void TakeDamage(int damage)
@@ -138,7 +135,7 @@ public class Enemy : MonoBehaviour
     private void Die()
     {
         canMove = false;
-        healthText.enabled = false;
+        healthBar.gameObject.SetActive(false);
         Destroy(gameObject);
     }
 

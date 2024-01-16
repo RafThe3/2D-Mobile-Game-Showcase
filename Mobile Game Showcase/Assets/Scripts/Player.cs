@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
@@ -11,14 +12,15 @@ public class Player : MonoBehaviour
     #region Health
     [Header("Health")]
     [SerializeField] private int maxHealth = 100;
-    [SerializeField] private float healDelay;
-    [SerializeField] private TextMeshProUGUI healthText, healthPacksText;
+    [SerializeField] private float healDelay = 1;
+    [SerializeField] private int startingHealthPacks = 1;
+    [SerializeField] private Slider healthBar;
+    [SerializeField] private TextMeshProUGUI healthPacksText;
     [SerializeField] private AudioClip healSFX, healPickupSFX;
 
     //Internal Variables
-    private int currentHealth;
     private int healthPacks;
-    [SerializeField] private int startingHealthPacks = 3;
+    private int currentHealth;
     private AudioSource audioSource;
     private float healTimer;
     #endregion
@@ -50,10 +52,9 @@ public class Player : MonoBehaviour
     private void Awake()
     {
         #region Other
-
         rb = GetComponent<Rigidbody2D>();
         cldr = GetComponent<Collider2D>();
-
+        audioSource = GetComponent<AudioSource>();
         #endregion
     }
 
@@ -68,10 +69,11 @@ public class Player : MonoBehaviour
 
         #region Health
         currentHealth = maxHealth;
-        healthText.text = $"Health: {currentHealth}";
+        healthBar.value = healthBar.maxValue;
         healthPacksText.text = $"= {healthPacks}";
-        audioSource = GetComponent<AudioSource>();
         healthPacks = startingHealthPacks;
+        healTimer = healDelay;
+        audioSource = GetComponent<AudioSource>();
         animator = GetComponent<Animator>();
         #endregion
     }
@@ -91,18 +93,28 @@ public class Player : MonoBehaviour
         #endregion
 
         #region Health
+        healTimer += Time.deltaTime;
+
         if (currentHealth <= 0)
         {
             Die();
         }
 
-        Debug.Log(currentHealth);
+        //Test
+        if (Input.GetKeyDown(KeyCode.E) && healTimer >= healDelay && healthPacks > 0)
+        {
+            Heal(10);
+        }
 
-        //Code below fixes bugs
+        //Bug fixes
         if (currentHealth < 0)
         {
             currentHealth = 0;
         }
+
+        healthPacksText.text = $"= {healthPacks}";
+        healthBar.value = currentHealth;
+        Debug.Log(healthPacks);
         #endregion
     }
 
@@ -170,6 +182,8 @@ public class Player : MonoBehaviour
         {
             currentHealth = maxHealth;
         }
+
+        healTimer = 0;
     }
 
     private void Die()
@@ -178,19 +192,10 @@ public class Player : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Health Pack"))
-        {
-            CollectHealthPack(collision);
-        }
-    }
-
-    private void CollectHealthPack(Collision2D collision)
+    public void CollectHealthPack()
     {
         healthPacks++;
         audioSource.PlayOneShot(healPickupSFX);
-        Destroy(collision.gameObject);
     }
 
     #endregion
