@@ -29,6 +29,7 @@ public class Enemy : MonoBehaviour
     [Header("Damage")]
     [Min(0) ,SerializeField] private int damageToDeal = 1;
     [Min(0) ,SerializeField] private float damageDelay = 1;
+    [SerializeField] private AudioClip attackSFX;
 
     //Internal Variables
     private float damageTimer;
@@ -37,6 +38,7 @@ public class Enemy : MonoBehaviour
     #region Other
     private GameObject player;
     private Rigidbody2D rb;
+    private AudioSource audioSource;
 
     //Game specific only - remove if unnecessary
     private EnemyCounter enemyCounter;
@@ -69,6 +71,7 @@ public class Enemy : MonoBehaviour
         #region Other
         rb = GetComponent<Rigidbody2D>();
         player = GameObject.FindGameObjectWithTag("Player");
+        audioSource = GetComponent<AudioSource>();
         #endregion
     }
 
@@ -138,6 +141,7 @@ public class Enemy : MonoBehaviour
     private void DealDamage()
     {
         player.GetComponent<Player>().TakeDamage(damageToDeal);
+        audioSource.PlayOneShot(attackSFX);
         damageTimer = 0;
     }
 

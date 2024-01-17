@@ -9,7 +9,7 @@ public class Gun : MonoBehaviour
     [SerializeField] private bool automaticFire = true;
     [Min(0) ,SerializeField] private float bulletLifeTime = 1, bulletSpeed = 1, shootDelay = 1;
     [Min(0)] public int damageToDeal = 1, startingAmmo = 30;
-    [SerializeField] private AudioClip shootSFX;
+    [SerializeField] private AudioClip shootSFX, reloadSFX;
     [SerializeField] private TMPro.TextMeshProUGUI ammoText;
 
     private float shootTimer;
@@ -43,6 +43,7 @@ public class Gun : MonoBehaviour
         if (currentAmmo <= 0)
         {
             currentAmmo = startingAmmo;
+            Camera.main.GetComponent<AudioSource>().PlayOneShot(reloadSFX);
         }
     }
 

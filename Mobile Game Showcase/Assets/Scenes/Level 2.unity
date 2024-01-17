@@ -39561,6 +39561,7 @@ MonoBehaviour:
   damageToDeal: 13
   startingAmmo: 30
   shootSFX: {fileID: 8300000, guid: d47763bb935fd83499f0b7f388b85b87, type: 3}
+  reloadSFX: {fileID: 8300000, guid: 1fb0702890ccc944790b502e66ff7a8c, type: 3}
   ammoText: {fileID: 703857751}
 --- !u!114 &1089246834
 MonoBehaviour:
@@ -61234,11 +61235,11 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: b8c334eb25b312d498cd7e0eb3c66666, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
