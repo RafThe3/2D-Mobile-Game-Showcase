@@ -6,29 +6,61 @@ using UnityEngine;
 public class Gun : MonoBehaviour
 {
     [SerializeField] private GameObject bulletPrefab;
-    [Min(0) ,SerializeField] private float bulletLifeTime = 1, bulletSpeed = 1;
-    [Min(0)] public int damageToDeal = 1;
+    [SerializeField] private bool automaticFire = true;
+    [Min(0) ,SerializeField] private float bulletLifeTime = 1, bulletSpeed = 1, shootDelay = 1;
+    [Min(0)] public int damageToDeal = 1, startingAmmo = 30;
     [SerializeField] private AudioClip shootSFX;
+    [SerializeField] private TMPro.TextMeshProUGUI ammoText;
 
-    // Update is called once per frame
+    private float shootTimer;
+    private int currentAmmo;
+
+    private void Start()
+    {
+        shootTimer = shootDelay;
+        currentAmmo = startingAmmo;
+    }
+
     private void Update()
     {
-        if (Input.GetButtonDown("Fire1"))
+        shootTimer += Time.deltaTime;
+
+        if ((Input.GetButtonDown("Fire1") && !automaticFire || Input.GetButton("Fire1") && automaticFire) && shootTimer >= shootDelay)
         {
             Shoot();
+        }
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            Reload();
+        }
+
+        ammoText.text = $"= {currentAmmo}";
+    }
+
+    public void Reload()
+    {
+        if (currentAmmo <= 0)
+        {
+            currentAmmo = startingAmmo;
         }
     }
 
     private void Shoot()
     {
-        GameObject bullet = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
-        Vector3 mousePosition = Input.mousePosition;
-        mousePosition.z = -Camera.main.transform.position.z;
-        mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
-        Vector3 shootDir = mousePosition - transform.position;
-        shootDir.Normalize();
-        bullet.GetComponent<Rigidbody2D>().velocity = 10 * bulletSpeed * shootDir;
-        Camera.main.GetComponent<AudioSource>().PlayOneShot(shootSFX);
-        Destroy(bullet, bulletLifeTime);
+        if (currentAmmo > 0)
+        {
+            GameObject bullet = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
+            Vector3 mousePosition = Input.mousePosition;
+            mousePosition.z = -Camera.main.transform.position.z;
+            mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
+            Vector3 shootDir = mousePosition - transform.position;
+            shootDir.Normalize();
+            bullet.GetComponent<Rigidbody2D>().velocity = 10 * bulletSpeed * shootDir;
+            Camera.main.GetComponent<AudioSource>().PlayOneShot(shootSFX);
+            Destroy(bullet, bulletLifeTime);
+            shootTimer = 0;
+            currentAmmo--;
+        }
     }
 }

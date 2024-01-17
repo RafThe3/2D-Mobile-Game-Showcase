@@ -37,6 +37,9 @@ public class Enemy : MonoBehaviour
     #region Other
     private GameObject player;
     private Rigidbody2D rb;
+
+    //Game specific only - remove if unnecessary
+    private EnemyCounter enemyCounter;
     #endregion
 
     #endregion
@@ -45,6 +48,7 @@ public class Enemy : MonoBehaviour
     {
         #region Health
         currentHealth = maxHealth;
+        healthBar.maxValue = maxHealth;
         healthBar.value = healthBar.maxValue;
         healthBar.gameObject.SetActive(false);
         textScale = healthText.transform.localScale;
@@ -52,6 +56,11 @@ public class Enemy : MonoBehaviour
 
         #region Damage
         damageTimer = damageDelay;
+        #endregion
+
+        #region Other
+        //Game specific only
+        enemyCounter = FindObjectOfType<EnemyCounter>();
         #endregion
     }
 
@@ -137,6 +146,9 @@ public class Enemy : MonoBehaviour
         canMove = false;
         healthBar.gameObject.SetActive(false);
         Destroy(gameObject);
+
+        //Game specific only - remove if unnecessary
+        enemyCounter.enemiesRemaining--;
     }
 
     private void OnCollisionStay2D(Collision2D collision)

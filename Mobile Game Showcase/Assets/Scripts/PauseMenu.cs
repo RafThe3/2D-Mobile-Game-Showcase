@@ -10,7 +10,7 @@ public class PauseMenu : MonoBehaviour
 
     private void Start()
     {
-        allowKeyControls = FindObjectOfType<PlayerMovement>().allowKeyControls;
+        allowKeyControls = FindObjectOfType<Player>().allowKeyControls;
         pauseMenu.enabled = false;
     }
 

@@ -17,6 +17,8 @@ public class Player : MonoBehaviour
     [SerializeField] private Slider healthBar;
     [SerializeField] private TextMeshProUGUI healthPacksText;
     [SerializeField] private AudioClip healSFX, healPickupSFX;
+    [SerializeField] private Canvas loseScreen;
+
 
     //Internal Variables
     private int healthPacks;
@@ -40,14 +42,13 @@ public class Player : MonoBehaviour
     #endregion
 
     #region Other
-    private Animator animator;
+    //private Animator animator;
     private Collider2D cldr;
     private Rigidbody2D rb;
     private bool allowGravity = false;
     #endregion
 
     #endregion
-
 
     private void Awake()
     {
@@ -69,12 +70,16 @@ public class Player : MonoBehaviour
 
         #region Health
         currentHealth = maxHealth;
+        healthBar.maxValue = maxHealth;
         healthBar.value = healthBar.maxValue;
         healthPacksText.text = $"= {healthPacks}";
         healthPacks = startingHealthPacks;
         healTimer = healDelay;
         audioSource = GetComponent<AudioSource>();
-        animator = GetComponent<Animator>();
+        //animator = GetComponent<Animator>();
+        //Game specific only - remove if unnecessary
+        loseScreen.enabled = false;
+        Time.timeScale = 1;
         #endregion
     }
 
@@ -189,7 +194,8 @@ public class Player : MonoBehaviour
     private void Die()
     {
         canMove = false;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        loseScreen.enabled = true;
+        Time.timeScale = 0;
     }
 
     public void CollectHealthPack()

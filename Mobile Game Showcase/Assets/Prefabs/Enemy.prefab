@@ -241,7 +241,7 @@ SpriteRenderer:
   m_SortingLayerID: 323186493
   m_SortingLayer: 2
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
+  m_Sprite: {fileID: 1840276551, guid: dca2d96b9b1cfde4592bd378cc25a78e, type: 3}
   m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -264,7 +264,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 100
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 0
@@ -315,14 +315,14 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
+    oldSize: {x: 4.1875, y: 2.8125}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 4.1875, y: 2.8125}
   m_EdgeRadius: 0
 --- !u!114 &5061982327875092785
 MonoBehaviour:
@@ -341,8 +341,8 @@ MonoBehaviour:
   maxHealth: 100
   healthText: {fileID: 4906054812806619251}
   healthBar: {fileID: 7825302249831352774}
-  damageToDeal: 10
-  damageDelay: 1
+  damageToDeal: 5
+  damageDelay: 1.5
 --- !u!1 &3668729052959976006
 GameObject:
   m_ObjectHideFlags: 0
@@ -573,7 +573,7 @@ Canvas:
   m_VertexColorAlwaysGammaSpace: 0
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
-  m_SortingLayerID: 0
+  m_SortingLayerID: 323186493
   m_SortingOrder: 0
   m_TargetDisplay: 0
 --- !u!114 &7318953731813071672
