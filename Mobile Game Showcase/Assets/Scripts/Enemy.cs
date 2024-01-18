@@ -126,7 +126,7 @@ public class Enemy : MonoBehaviour
         //Vector3 enemyFacing = gameObject.transform.localScale.x < 0 ? new(-textScale.x, textScale.y, textScale.z) : textScale;
         //healthBar.transform.localScale = enemyFacing;
 
-        if (currentHealth < 100)
+        if (currentHealth < maxHealth)
         {
             healthBar.gameObject.SetActive(true);
         }
@@ -138,9 +138,10 @@ public class Enemy : MonoBehaviour
     {
         currentHealth -= damage;
     }
-    private void DealDamage()
+
+    private void DealDamage(int damage)
     {
-        player.GetComponent<Player>().TakeDamage(damageToDeal);
+        player.GetComponent<Player>().TakeDamage(damage);
         audioSource.PlayOneShot(attackSFX);
         damageTimer = 0;
     }
@@ -159,7 +160,7 @@ public class Enemy : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player") && damageTimer >= damageDelay)
         {
-            DealDamage();
+            DealDamage(damageToDeal);
         }
     }
 
