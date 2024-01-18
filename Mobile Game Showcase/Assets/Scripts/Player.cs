@@ -59,7 +59,6 @@ public class Player : MonoBehaviour
         #endregion
     }
 
-    // Start is called before the first frame update
     private void Start()
     {
         #region Movement and Controls
@@ -83,7 +82,6 @@ public class Player : MonoBehaviour
         #endregion
     }
 
-    // Update is called once per frame
     private void Update()
     {
         #region Movement and Controls
@@ -105,8 +103,7 @@ public class Player : MonoBehaviour
             Die();
         }
 
-        //Test
-        if (Input.GetKeyDown(KeyCode.E) && healTimer >= healDelay && healthPacks > 0)
+        if (Input.GetKeyDown(KeyCode.E))
         {
             Heal(10);
         }
@@ -116,6 +113,12 @@ public class Player : MonoBehaviour
         {
             currentHealth = 0;
         }
+
+        if (currentHealth > maxHealth)
+        {
+            currentHealth = maxHealth;
+        }
+        //
 
         healthPacksText.text = $"= {healthPacks}";
         healthBar.value = currentHealth;
@@ -176,16 +179,11 @@ public class Player : MonoBehaviour
 
     public void Heal(int health)
     {
-        if (currentHealth < maxHealth)
+        if (currentHealth < maxHealth && healTimer >= healDelay && healthPacks > 0)
         {
             currentHealth += health;
             healthPacks--;
             audioSource.PlayOneShot(healSFX);
-        }
-
-        if (currentHealth > maxHealth)
-        {
-            currentHealth = maxHealth;
         }
 
         healTimer = 0;
