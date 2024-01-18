@@ -5,13 +5,23 @@ using UnityEngine;
 
 public class Gun : MonoBehaviour
 {
+    [Header("Bullet")]
     [SerializeField] private GameObject bulletPrefab;
+    [Min(0), SerializeField] private float bulletLifeTime = 1;
+    [Min(0), SerializeField] private float bulletSpeed = 1;
+
+    [Header("Gun")]
     [SerializeField] private bool automaticFire = true;
-    [Min(0) ,SerializeField] private float bulletLifeTime = 1, bulletSpeed = 1, shootDelay = 1;
-    [Min(0)] public int damageToDeal = 1, startingAmmo = 30;
-    [SerializeField] private AudioClip shootSFX, reloadSFX;
+    [Min(0), SerializeField] private float shootDelay = 1;
+    [Min(0)] public int damageToDeal = 1;
+    [Min(0)] public int startingAmmo = 30;
+
+    [Header("Other")]
+    [SerializeField] private AudioClip shootSFX;
+    [SerializeField] private AudioClip reloadSFX;
     [SerializeField] private TMPro.TextMeshProUGUI ammoText;
 
+    //Internal Variables
     private float shootTimer;
     private int currentAmmo;
 

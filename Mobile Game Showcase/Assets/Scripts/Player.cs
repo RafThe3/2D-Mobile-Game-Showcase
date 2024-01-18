@@ -9,11 +9,19 @@ public class Player : MonoBehaviour
 {
     #region Variables
 
+    #region Movement
+    [Header("Movement")]
+    public bool canMove = true;
+    [Min(0), SerializeField] private float moveSpeed = 1;
+    [Min(0), SerializeField] private float jumpForce = 1;
+    #endregion
+
     #region Health
     [Header("Health")]
-    [SerializeField] private int maxHealth = 100;
-    [SerializeField] private float healDelay = 1;
-    [SerializeField] private int startingHealthPacks = 1;
+    [Min(0), SerializeField] private int maxHealth = 100;
+    [Min(0), SerializeField] private int healAmount = 1;
+    [Min(0), SerializeField] private int startingHealthPacks = 1;
+    [Min(0), SerializeField] private float healDelay = 1;
     [SerializeField] private Slider healthBar;
     [SerializeField] private TextMeshProUGUI healthPacksText;
     [SerializeField] private AudioClip healSFX, healPickupSFX;
@@ -25,13 +33,6 @@ public class Player : MonoBehaviour
     private int currentHealth;
     private AudioSource audioSource;
     private float healTimer;
-    #endregion
-
-    #region Movement
-    [Header("Movement")]
-    public bool canMove = true;
-    [Min(0), SerializeField] private float moveSpeed = 1;
-    [Min(0), SerializeField] private float jumpForce = 1;
     #endregion
 
     #region Controls
@@ -103,9 +104,9 @@ public class Player : MonoBehaviour
             Die();
         }
 
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.E) && healTimer >= healDelay && healthPacks > 0)
         {
-            Heal(10);
+            Heal(healAmount);
         }
 
         //Bug fixes
