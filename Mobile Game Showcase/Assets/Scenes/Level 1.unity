@@ -23548,7 +23548,7 @@ MonoBehaviour:
   damageToDeal: 16
   startingAmmo: 30
   shootSFX: {fileID: 8300000, guid: d47763bb935fd83499f0b7f388b85b87, type: 3}
-  reloadSFX: {fileID: 0}
+  reloadSFX: {fileID: 8300000, guid: 1fb0702890ccc944790b502e66ff7a8c, type: 3}
   ammoText: {fileID: 1827343797}
 --- !u!1 &1096685432
 GameObject:
